@@ -1,4 +1,3 @@
-import 'primeicons/primeicons.css'
 function App() {
   return (
     <>
