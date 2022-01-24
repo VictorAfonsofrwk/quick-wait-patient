@@ -1,7 +1,12 @@
+import { BrowserRouter } from "react-router-dom";
+import MainPage from "./pages/MainPage";
+
 function App() {
   return (
     <>
-      <h1 className="text-3xl">It works</h1>      
+    <BrowserRouter>
+      <MainPage />
+    </BrowserRouter>
     </>
   );
 }
