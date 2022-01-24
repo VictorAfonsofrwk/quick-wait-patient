@@ -3,25 +3,24 @@ import QuickWait from "../../assets/QuickWait.svg";
 import Subtract from "../../assets/Subtract.svg";
 import map from "../../assets/map.svg";
 import news from "../../assets/news.svg";
-
+import { NavBarMenu, NavContainer, LogoHome, CustomLink, HomeItem, NavBarListItem, NavItem } from './styles'
 export default function NavBar() {
   return (
     <>
-      <nav className="relative  bg-cyan-50 p-2 text-cyan-700 shadow-md">
-        <div className="container px-4 flex items-center justify-around">
-          <div className="w-full flex lg:w-auto lg:static lg:block lg:justify-start">
-            <Link
-              className="text-lg font-bold  inline-block mr-2  uppercase "
-              to="/"
+      <NavBarMenu>
+        <NavContainer>
+          <LogoHome>
+            <CustomLink
+              to="/patient"
             >
-                <div className="flex flex-row items-center">
-              <img  src={Subtract} alt="logo quick wait" />
-              <img className = '-mx-3.5'src={QuickWait} alt="logoquick wait" />
-              </div>
-            </Link>
-          </div>
-          <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-            <li id="hospitais" className="nav-item">
+              <HomeItem >
+                <img src={Subtract} alt="logo quick wait" />
+                <img className='-mx-3.5' src={QuickWait} alt="logoquick wait" />
+              </HomeItem>
+            </CustomLink>
+          </LogoHome>
+          <NavBarListItem>
+            <NavItem id="hospitais">
               <Link
                 className="nav-link px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75"
                 to="patient/hospitais"
@@ -29,8 +28,8 @@ export default function NavBar() {
                 <img src={map} alt="hospitais" />
                 <span className="ml-2">Hospitais</span>
               </Link>
-            </li>
-            <li id="noticias" className="nav-item">
+            </NavItem>
+            <NavItem id="noticias">
               <Link
                 className="nav-link px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75"
                 to="patient/noticias"
@@ -38,11 +37,11 @@ export default function NavBar() {
                 <img src={news} alt="hospitais" className="text-cyan-600" />
                 <span className="ml-2">Noticias</span>
               </Link>
-            </li>
-            
-          </ul>
-        </div>
-      </nav>
+            </NavItem>
+
+          </NavBarListItem>
+        </NavContainer>
+      </NavBarMenu>
     </>
   );
 }
