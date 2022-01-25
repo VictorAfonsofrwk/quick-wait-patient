@@ -1,10 +1,16 @@
-import AddReminder from "./components/AddReminder";
+import { BrowserRouter } from "react-router-dom";
+import MainPage from "./pages/MainPage";
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 function App() {
   return (
     <>
-      <h1 className="text-3xl">It works</h1>     
-      <AddReminder/> 
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </MuiPickersUtilsProvider>
     </>
   );
 }

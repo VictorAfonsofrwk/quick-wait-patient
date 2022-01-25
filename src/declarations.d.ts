@@ -2,6 +2,10 @@ declare module "*.html" {
   const rawHtmlFile: string;
   export = rawHtmlFile;
 }
+declare module "*.css" {
+  const rawCssFile: string;
+  export = rawCssFile;
+}
 
 declare module "*.bmp" {
   const src: string;

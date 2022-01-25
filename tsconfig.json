@@ -5,6 +5,6 @@
     "declarationDir": "dist"
   },
   "files": ["src/frwk-quick-wait-react.tsx"],
-  "include": ["src/**/*"],
+  "include": ["src/**/*","tailwind.config.js"],
   "exclude": ["src/**/*.test*"]
 }
