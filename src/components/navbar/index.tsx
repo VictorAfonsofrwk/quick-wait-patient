@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import QuickWait from "../../assets/QuickWait.svg";
 import Subtract from "../../assets/Subtract.svg";
 import map from "../../assets/map.svg";
