@@ -1,44 +1,68 @@
-import { Link } from "react-router-dom";
 import QuickWait from "../../assets/QuickWait.svg";
 import Subtract from "../../assets/Subtract.svg";
-import map from "../../assets/map.svg";
-import news from "../../assets/news.svg";
-import { NavBarMenu, NavContainer, LogoHome, CustomLink, HomeItem, NavBarListItem, NavItem } from './styles'
+import map from "../../assets/map-svgrepo-com.svg";
+import news from "../../assets/newspaper-svgrepo-com.svg";
+import stylebar from "../../assets/stylebar.svg";
+import {
+  NavBarMenu,
+  NavContainer,
+  LogoHome,
+  LinkToHome,
+  HomeItem,
+  NavBarListItem,
+  NavItem,
+  CustomLink
+} from './styles'
+import { LinkProps, useMatch, useResolvedPath } from "react-router-dom";
+function ActiveRoute({ children, to, ...props }: LinkProps) {
+  let resolved = useResolvedPath(to);
+  let match = useMatch({ path: resolved.pathname, end: true });
+
+  return (
+    <div>
+      <CustomLink
+        style={{ textDecoration: match ? "underline" : "none" }}
+        to={to}
+        {...props}
+      >
+        {children}
+      </CustomLink>
+      {match && ""}
+    </div>
+  );
+}
 export default function NavBar() {
   return (
     <>
       <NavBarMenu>
         <NavContainer>
           <LogoHome>
-            <CustomLink
-              to="/patient"
-            >
+            <LinkToHome to="/patient">
               <HomeItem >
                 <img src={Subtract} alt="logo quick wait" />
                 <img className='-mx-3.5' src={QuickWait} alt="logoquick wait" />
               </HomeItem>
-            </CustomLink>
+            </LinkToHome>
           </LogoHome>
           <NavBarListItem>
             <NavItem id="hospitais">
-              <Link
-                className="nav-link px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75"
-                to="patient/hospitais"
-              >
+              <ActiveRoute to="patient/hospitais">
                 <img src={map} alt="hospitais" />
                 <span className="ml-2">Hospitais</span>
-              </Link>
+              </ActiveRoute>
             </NavItem>
             <NavItem id="noticias">
-              <Link
-                className="nav-link px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75"
-                to="patient/noticias"
-              >
+              <ActiveRoute to="patient/noticias">
                 <img src={news} alt="hospitais" className="text-cyan-600" />
                 <span className="ml-2">Noticias</span>
-              </Link>
+              </ActiveRoute>
             </NavItem>
-
+            <li className="nav-item h-full -m-1">
+              <img src={stylebar} alt='style content' />
+            </li>
+            <li className="nav-item h-full ">
+              <button type="button" className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button>
+            </li>
           </NavBarListItem>
         </NavContainer>
       </NavBarMenu>
