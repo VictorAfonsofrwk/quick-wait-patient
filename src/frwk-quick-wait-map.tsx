@@ -1,17 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import singleSpaReact from "single-spa-react";
-import "./index.css";
-import App from "./App";
+import FrwkMap from "./components/map";
+// import "./index.css";
 
-function domElementGetter() {
-  return document.getElementById("single-spa-application:@frwk/patient");
-}
 const lifecycles = singleSpaReact({
   React,
   ReactDOM,
-  rootComponent: App,
-  domElementGetter,
+  rootComponent: FrwkMap,
   errorBoundary(err, info, props) {
     return null;
   },

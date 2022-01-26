@@ -4,6 +4,7 @@ import NavBar from "./components/navbar";
 
 function App() {
   return (
+    // <BrowserRouter basename="patient">
     <BrowserRouter>
       <NavBar />
       <AppRoutes />
