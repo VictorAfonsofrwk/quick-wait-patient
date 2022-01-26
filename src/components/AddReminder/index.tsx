@@ -6,7 +6,7 @@ import "./styles.css";
 import { KeyboardTimePicker } from "@material-ui/pickers";
 function AddReminder() {
   let subtitle;
-  const [modalIsOpen, setIsOpen] = useState(true);
+  const [modalIsOpen, setIsOpen] = useState(false);
   const [sunday, setSunday] = useState(true);
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
@@ -52,15 +52,8 @@ function AddReminder() {
     }
   }
 
-  const onChange = (event) => {
-    this.set({
-      value: event.target.value
-    });
-  }
-
   return (
     <div>
-      <button onClick={openModal}>Open Modal</button>
       <ReactModal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
