@@ -15,7 +15,6 @@ export const NavBarMenu = tw.nav`
 `;
 
 export const NavContainer = tw.div`
-  container 
   flex 
   items-center 
 `;
