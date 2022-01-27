@@ -7,6 +7,7 @@ export const NavBarMenu = tw.nav`
   p-2 
   text-cyan-700 
   shadow-md
+  z-40
 `;
 
 export const NavContainer = tw.div`
