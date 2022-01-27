@@ -11,9 +11,6 @@ export default function CaroucelNews() {
     }
     useEffect(() => {
         loadNews();
-
-        return () => {
-        };
     }, []);
 
     return <div className="rounded-t-lg p-1 ">
