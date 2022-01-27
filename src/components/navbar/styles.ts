@@ -1,10 +1,14 @@
 import tw from "tailwind-styled-components"
-import { Link } from "react-router-dom";
-
+import {
+  Link,
+  useMatch,
+  useResolvedPath
+} from "react-router-dom";
+import type { LinkProps } from "react-router-dom";
 export const NavBarMenu = tw.nav`
-  relative  
+  relative
+  px-3  
   bg-cyan-50 
-  p-2 
   text-cyan-700 
   shadow-md
   z-40
@@ -12,10 +16,8 @@ export const NavBarMenu = tw.nav`
 
 export const NavContainer = tw.div`
   container 
-  px-4 
   flex 
   items-center 
-  justify-around
 `;
 
 export const LogoHome = tw.div`
@@ -42,23 +44,26 @@ export const HomeItem = tw.div`
 `;
 
 export const NavBarListItem = tw.div`
-  flex 
-  flex-col 
+  flex
+  w-1/2
+  flex-row
+  justify-around
+  space-x-2
+  items-center
   lg:flex-row 
   list-none 
   lg:ml-auto
 `;
 
-export const NavItem = tw.li`nav-item`;
+export const NavItem = tw.li``;
 
 export const CustomLink = tw(Link)`
-  nav-link 
-  px-3 py-2 
-  flex 
-  items-center 
-  text-xs 
-  uppercase 
+  nav-link
+  text-xs
+  flex
+  flex-row
+  items-center
+  justify-around 
   font-bold 
-  leading-snug
   hover:opacity-75
 `;
