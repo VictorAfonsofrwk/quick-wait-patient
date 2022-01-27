@@ -1,5 +1,4 @@
 
-import { IArticles } from "../../interfaces/newsInterface";
 import { getService } from "../api/generalApiService";
 const API_KEY = 'b114a79ce39e43d38fb409be42f195bb'
 const BASE_URL = `https://newsapi.org/v2/`

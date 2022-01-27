@@ -60,17 +60,12 @@
     "@types/react-dom": "^17.0.9",
     "@types/systemjs": "^6.1.1",
     "@types/webpack-env": "^1.16.2",
-<<<<<<< Updated upstream
+    "axios": "^0.25.0",
     "leaflet": "^1.7.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-leaflet": "^3.2.5",
-=======
-    "axios": "^0.25.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-responsive-carousel": "^3.2.22",
->>>>>>> Stashed changes
     "react-router-dom": "6",
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1"

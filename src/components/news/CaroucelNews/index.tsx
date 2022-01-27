@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import { getNews } from "../../../services/news/newsService";
 import "react-responsive-carousel/lib/styles/carousel.min.css"
-import { IArticles, INews } from "../../../interfaces/newsInterface";
+import { IArticles } from "../../../interfaces/newsInterface";
 export default function CaroucelNews() {
     const [articles, setArticles] = useState([]);
-    //const [articles, setArticles] = useState('');
     async function loadNews() {
         setArticles(await getNews(''))
 
