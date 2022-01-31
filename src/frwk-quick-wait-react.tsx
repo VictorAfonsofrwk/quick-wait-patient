@@ -13,7 +13,7 @@ const lifecycles = singleSpaReact({
   rootComponent: App,
   domElementGetter,
   errorBoundary(err, info, props) {
-    return null;
+    return <div>{err.message}</div>;
   },
 });
 
