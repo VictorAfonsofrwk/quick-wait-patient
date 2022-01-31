@@ -1,0 +1,12 @@
+.reminder-container {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  min-width: 25vw;
+  height: calc(100vh - 80px);
+  background-color: #12a1a7;
+}
+.title {
+  font-size: 30px;
+  line-height: 37px;
+}

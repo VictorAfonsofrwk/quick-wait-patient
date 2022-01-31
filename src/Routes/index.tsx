@@ -5,7 +5,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path='/patient' element={<Home />} />
-      <Route path='hospitais' element={<Home />} />
+      <Route path='/hospitais' element={<Home />} />
     </Routes>
   );
 }
