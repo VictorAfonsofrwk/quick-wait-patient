@@ -112,7 +112,58 @@ const FrwkMap = () => {
         {route.routes ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry) : ""}
       </MapContainer>
     </div>
-  );
-};
+import React, { useState, useCallback, useEffect } from "react";
+  import * as ReactDOM from "react-dom";
+  import { MapContainer, TileLayer, Marker, Popup, Pane } from "react-leaflet";
+  import singleSpaReact from "single-spa-react";
+  import { IPlaceModel, mockedplaces } from "../../interfaces/placesInterface";
+  import Modal from "./modal";
+  const FrwkMap = () => {
+    const { lat, lon } = JSON.parse(localStorage.getItem('coordenada'))
+    const [showModal, setShowModal] = useState(false)
+    const [latitude, setLatitude] = useState(lat)
+    const [longitude, setLongitude] = useState(lon)
 
-export default FrwkMap;
+    async function initiateLocalization() {
+      try {
+        if (lat === 0) {
+          setShowModal(true)
+        }
+      } catch (err) {
+        console.error(err.message)
+      }
+    }
+    useEffect(() => {
+      initiateLocalization()
+    }, []);
+
+    return (
+      <>
+        {showModal ? <Modal /> :
+          <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
+
+            <MapContainer
+              center={[latitude, longitude]}
+              zoom={15}
+              style={{ width: "100%", height: "100%" }}
+            >
+
+
+              <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              <Marker position={[latitude, longitude]}>
+                <Popup>
+
+                </Popup>
+              </Marker>
+
+            </MapContainer>
+
+          </div >}
+
+      </>
+
+    );
+  };
+
+  export default FrwkMap;
+
