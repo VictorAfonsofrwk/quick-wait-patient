@@ -11,10 +11,10 @@ export const NavBarMenu = tw.nav`
   bg-cyan-50 
   text-cyan-700 
   shadow-md
+  z-40
 `;
 
 export const NavContainer = tw.div`
-  container 
   flex 
   items-center 
 `;
