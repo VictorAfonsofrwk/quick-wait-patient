@@ -4,7 +4,6 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   Polyline,
   Tooltip,
 } from "react-leaflet";
@@ -20,6 +19,7 @@ import { mockedplaces } from "./mockPlaces";
 import { mockedRoute } from "./mockRoute";
 import hM from "../../assets/hospitalMarker.png";
 import uLM from "../../assets/userLocationMarker.svg";
+import MapPopup from "./mapPopup";
 
 const FrwkMap = () => {
   const openStreetApi = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -121,9 +121,9 @@ const FrwkMap = () => {
           const [lng, lat] = place.center;
           return (
             <Marker icon={hospitalMarker} key={place.id} position={[lat, lng]}>
-              <Popup>{place.place_name}</Popup>
+              <MapPopup name={place.text} address={place.place_name} />
               <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
-                {place.place_name}
+                {place.text}
               </Tooltip>
             </Marker>
           );
@@ -133,7 +133,6 @@ const FrwkMap = () => {
           position={[mapCenter[0], mapCenter[1]]}
           key={"root"}
         >
-          <Popup>kapa</Popup>
           <Tooltip
             position={[mapCenter[0], mapCenter[1]]}
             direction="bottom"
