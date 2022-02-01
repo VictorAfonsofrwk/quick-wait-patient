@@ -1,11 +1,27 @@
-import CaroucelNews from '../../components/news/CaroucelNews';
+import React, { useState, useEffect } from 'react';
+import { getNews } from "../../services/news/newsService";
 import MainContentNews from '../../components/news/MainContentNews';
-//18, 161, 167, 1
-export default function News() {
-    return <div className='p-4 bg-cover bg-cyan-600 w-screen h-screen shadow-3xl  relative flex flex-col items-center'>
-        <MainContentNews>
-            <CaroucelNews />
-        </MainContentNews>
+import CaroucelNews from '../../components/news/CaroucelNews';
+import ListViewNews from '../../components/news/ListViewNews';
+import { Container } from './styles';
 
-    </div>;
+export default function News() {
+  const [articles, setArticles] = useState([]);
+  async function loadNews() {
+    setArticles(await getNews(''));
+  }
+
+  useEffect(() => {
+    loadNews();
+  }, []);
+  return (
+    <Container>
+      <MainContentNews>
+        <>
+          <CaroucelNews articles={articles} />
+          <ListViewNews articles={articles} />
+        </>
+      </MainContentNews>
+    </Container>
+  );
 }
