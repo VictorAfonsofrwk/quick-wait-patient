@@ -1,4 +1,3 @@
-import React from 'react';
 import CardNews from '../CardNews';
 import { Container } from './styles';
 import { IArticles } from "../../../interfaces/newsInterface";
@@ -8,12 +7,11 @@ interface IListArticles {
 }
 
 const ListViewNews = ({ articles }: IListArticles) => {
-  console.log(articles)
   return (
     <Container>
-      {articles.map(news => (
-        <CardNews />
-      ))}      
+      {[articles.map((article: IArticles, index) => (
+        <CardNews article={article} index={index} />
+      ))]}
     </Container>
   );
 }
