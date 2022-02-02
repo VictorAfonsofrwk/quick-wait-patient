@@ -1,0 +1,96 @@
+@import url("https://cdn.syncfusion.com/ej2/material.css");
+.Modal {
+  position: absolute;
+  top: 50%;
+  left: 85%;
+  display: block;
+  min-width: 25%;
+  max-width: 70%;
+  height: 100vh;
+  background-color: #e4fdff;
+  transform: translate(-50%, -50%);
+  outline: transparent;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.time-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reminder-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #90d8dc;
+  width: 100%;
+}
+.reminder-header .reminder {
+  font-size: 25px;
+  line-height: 31px;
+}
+.icon-close {
+  cursor: pointer;
+}
+.reminder-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.reminder-name input {
+  border-radius: 10px;
+  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.25);
+}
+.reminder-name .name {
+  color: #12a1a7;
+  font-size: 20px;
+  line-height: 25px;
+}
+.reminder-frequency {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.reminder-frequency .frequency-text {
+  color: #12a1a7;
+  font-size: 20px;
+  line-height: 25px;
+}
+.save-wrapper {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #90d8dc;
+}
+.btn-save {
+  font-size: 18px;
+  line-height: 22px;
+}
+.active-day {
+  background-color: #4dff89;
+}
+.day {
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+.reminder-active {
+  color: #12a1a7;
+  font-size: 20px;
+  line-height: 25px;
+}
