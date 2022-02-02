@@ -15,7 +15,7 @@ export default function CaroucelNews({ articles }: IListArticles) {
         autoPlay
         dynamicHeight
         renderThumbs={(children: React.ReactChild[]) => []}>
-        {articles.map((article: IArticles, index) => {
+        {articles.slice(0,5).map((article: IArticles, index) => {
           return (
             <div key={index}>
               <ImageNews 
