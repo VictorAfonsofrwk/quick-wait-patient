@@ -4,8 +4,8 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   Polyline,
+  Tooltip,
 } from "react-leaflet";
 import {
   LngLatModel,
@@ -17,11 +17,28 @@ import {
 import { getDirections, getPlaces } from "../../services/mapbox/mapboxService";
 import { mockedplaces } from "./mockPlaces";
 import { mockedRoute } from "./mockRoute";
+import hM from "../../assets/hospitalMarker.png";
+import uLM from "../../assets/userLocationMarker.svg";
+import MapPopup from "./mapPopup";
 
 const FrwkMap = () => {
   const openStreetApi = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const [places, setPlaces] = useState<Array<PlaceModel>>([]);
   const [route, setRoute] = useState<RoutingResponseModel>({});
+
+  const hospitalMarker = L.icon({
+    iconUrl: hM,
+    iconSize: [40, 40], // size of the icon
+    iconAnchor: [20, 40], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -40], // point from which the popup should open relative to the iconAnchor
+  });
+
+  const userLocationMarker = L.icon({
+    iconUrl: uLM,
+    iconSize: [30, 30], // size of the icon
+    iconAnchor: [15, 15], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+  });
 
   const getMockedPlaces = new Promise<Array<PlaceModel>>((resolve, reject) => {
     setTimeout(() => {
@@ -96,20 +113,39 @@ const FrwkMap = () => {
         zoom={15}
         style={{ width: "100%", height: "100%" }}
       >
-        <TileLayer url={openStreetApi} id="mapbox/streets-v11" />
+        <TileLayer
+          url={openStreetApi}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
         {places.map((place) => {
           const [lng, lat] = place.center;
           return (
-            <Marker key={place.id} position={[lat, lng]}>
-              <Popup>{place.place_name}</Popup>
+            <Marker icon={hospitalMarker} key={place.id} position={[lat, lng]}>
+              <MapPopup name={place.text} address={place.place_name} />
+              <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
+                {place.text}
+              </Tooltip>
             </Marker>
           );
         })}
-        <Marker position={[mapCenter[0], mapCenter[1]]} key={"root"}>
-          <Popup>Você está aqui</Popup>
+        <Marker
+          icon={userLocationMarker}
+          position={[mapCenter[0], mapCenter[1]]}
+          key={"root"}
+        >
+          <Tooltip
+            position={[mapCenter[0], mapCenter[1]]}
+            direction="bottom"
+            offset={[0, 0]}
+            opacity={1}
+          >
+            Você está aqui
+          </Tooltip>
         </Marker>
 
-        {route.routes ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry) : ""}
+        {route.routes
+          ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry)
+          : ""}
       </MapContainer>
     </div>
   );
