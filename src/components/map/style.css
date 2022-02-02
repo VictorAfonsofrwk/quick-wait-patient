@@ -1,0 +1,68 @@
+.hospital-popup {
+  margin: 0;
+  background-color: #90d8dc;
+  border-radius: 20px !important;
+}
+
+.hospital-popup .leaflet-popup-close-button {
+  display: none;
+}
+
+.hospital-popup .leaflet-popup-content-wrapper {
+  background: #90d8dc;
+  border-radius: 20px !important;
+}
+
+.hospital-popup .leaflet-popup-tip-container .leaflet-popup-tip {
+  background: #90d8dc;
+}
+
+.hospital-popup .info {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 25px;
+}
+
+.hospital-popup .info .h-address {
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  color: #535353;
+}
+
+.hospital-popup .btn-popup {
+  width: 100%;
+  background-color: #12a1a7;
+  border-radius: 20px;
+  color: white;
+  height: 51px;
+  font-size: 25px;
+}
+
+.hospital-popup .popup-title {
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 31px;
+  color: #000000;
+}
+
+.hospital-popup .user-hospital-check {
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  margin-left: 8px;
+}
