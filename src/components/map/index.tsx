@@ -14,18 +14,41 @@ import {
   RouteGeometry,
   RoutingResponseModel,
 } from "../../interfaces/mapboxApiInterfaces";
-import { getDirections, getPlaces } from "../../services/mapbox/mapboxService";
 import { mockedplaces } from "./mockPlaces";
 import { mockedRoute } from "./mockRoute";
 import hM from "../../assets/hospitalMarker.png";
 import uLM from "../../assets/userLocationMarker.svg";
 import MapPopup from "./mapPopup";
+import Modal from "./modal";
 
 const FrwkMap = () => {
   const openStreetApi = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const [places, setPlaces] = useState<Array<PlaceModel>>([]);
   const [route, setRoute] = useState<RoutingResponseModel>({});
+  const { lat, lon } = JSON.parse(localStorage.getItem('coordenada'))
+  const [showModal, setShowModal] = useState(false)
+  const [latitude, setLatitude] = useState(lat)
+  const [longitude, setLongitude] = useState(lon)
 
+  function handleShowModal() {
+    setShowModal(!showModal)
+  }
+  function handleAddressCoordinates(lat: number, lon: number) {
+    setLatitude(lat)
+    setLongitude(lon)
+  }
+  async function initiateLocalization() {
+    try {
+      if (lat === 0) {
+        setShowModal(true)
+      }
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+  useEffect(() => {
+    initiateLocalization()
+  }, []);
   const hospitalMarker = L.icon({
     iconUrl: hM,
     iconSize: [40, 40], // size of the icon
@@ -107,99 +130,133 @@ const FrwkMap = () => {
   }
 
   return (
-    <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
-      <MapContainer
-        center={[mapCenter[0], mapCenter[1]]}
-        zoom={15}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <TileLayer
-          url={openStreetApi}
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {places.map((place) => {
-          const [lng, lat] = place.center;
-          return (
-            <Marker icon={hospitalMarker} key={place.id} position={[lat, lng]}>
-              <MapPopup name={place.text} address={place.place_name} />
-              <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
-                {place.text}
+    <>
+      {showModal ? <div><Modal isOpen={showModal} showModal={handleShowModal} setCoordinates={handleAddressCoordinates} /><img src="https://54337.cdn.simplo7.net/static/54337/sku/digital-digital-exclusivas-tricoline-estampa-digital-mapa-mundo-ref-st-287-1589240857424.jpg" /></div>
+        :
+        <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
+          <MapContainer
+            center={[latitude, longitude]}
+            zoom={15}
+            style={{ width: "100%", height: "100%" }}
+          >
+            <TileLayer
+              url={openStreetApi}
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            {places.map((place) => {
+              const [lng, lat] = place.center;
+              return (
+                <Marker icon={hospitalMarker} key={place.id} position={[lat, lng]}>
+                  <MapPopup name={place.text} address={place.place_name} />
+                  <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
+                    {place.text}
+                  </Tooltip>
+                </Marker>
+              );
+            })}
+            <Marker
+              icon={userLocationMarker}
+              position={[latitude, longitude]}
+              key={"root"}
+            >
+              <Tooltip
+                position={[latitude, longitude]}
+                direction="bottom"
+                offset={[0, 0]}
+                opacity={1}
+              >
+                Você está aqui
               </Tooltip>
             </Marker>
-          );
-        })}
-        <Marker
-          icon={userLocationMarker}
-          position={[mapCenter[0], mapCenter[1]]}
-          key={"root"}
-        >
-          <Tooltip
-            position={[mapCenter[0], mapCenter[1]]}
-            direction="bottom"
-            offset={[0, 0]}
-            opacity={1}
-          >
-            Você está aqui
-          </Tooltip>
-        </Marker>
 
-        {route.routes
-          ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry)
-          : ""}
-      </MapContainer>
-    </div>
-import React, { useState, useCallback, useEffect } from "react";
-  import * as ReactDOM from "react-dom";
-  import { MapContainer, TileLayer, Marker, Popup, Pane } from "react-leaflet";
-  import singleSpaReact from "single-spa-react";
-  import { IPlaceModel, mockedplaces } from "../../interfaces/placesInterface";
-  import Modal from "./modal";
-  const FrwkMap = () => {
-    const { lat, lon } = JSON.parse(localStorage.getItem('coordenada'))
-    const [showModal, setShowModal] = useState(false)
-    const [latitude, setLatitude] = useState(lat)
-    const [longitude, setLongitude] = useState(lon)
+            {route.routes
+              ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry)
+              : ""}
+          </MapContainer>
+        </div>}
+    </>
+  );
+};
 
-    async function initiateLocalization() {
-      try {
-        if (lat === 0) {
-          setShowModal(true)
-        }
-      } catch (err) {
-        console.error(err.message)
-      }
-    }
-    useEffect(() => {
-      initiateLocalization()
-    }, []);
+// import React, { useState, useCallback, useEffect } from "react";
+//   import * as ReactDOM from "react-dom";
+//   import { MapContainer, TileLayer, Marker, Popup, Pane } from "react-leaflet";
+//   import singleSpaReact from "single-spa-react";
+//   import { IPlaceModel, mockedplaces } from "../../interfaces/placesInterface";
+//   import Modal from "./modal";
+//   const FrwkMap = () => {
+//     const { lat, lon } = JSON.parse(localStorage.getItem('coordenada'))
+//     const [showModal, setShowModal] = useState(false)
+//     const [latitude, setLatitude] = useState(lat)
+//     const [longitude, setLongitude] = useState(lon)
 
-    return (
-      <>
-        {showModal ? <Modal /> :
-          <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
+//     async function initiateLocalization() {
+//       try {
+//         if (lat === 0) {
+//           setShowModal(true)
+//         }
+//       } catch (err) {
+//         console.error(err.message)
+//       }
+//     }
+//     useEffect(() => {
+//       initiateLocalization()
+//     }, []);
+//     <>
+//       {showModal ? <Modal isOpen={showModal} showModal={handleShowModal} setCoordinates={handleAddressCoordinates} /> :
+//         <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
+//           <MapContainer
+//             center={[latitude, longitude]}
+//             zoom={15}
+//             style={{ width: "100%", height: "100%" }}
+//           >
+//             <TileLayer url={openStreetApi} id="mapbox/streets-v11" />
+//             {places.map((place) => {
+//               const [lng, lat] = place.center;
+//               return (
+//                 <Marker key={place.id} position={[lat, lng]}>
+//                   <Popup>{place.place_name}</Popup>
+//                 </Marker>
+//               );
+//             })}
+//             <Marker position={[latitude, longitude]} key={"root"}>
+//               <Popup>Você está aqui</Popup>
+//             </Marker>
 
-            <MapContainer
-              center={[latitude, longitude]}
-              zoom={15}
-              style={{ width: "100%", height: "100%" }}
-            >
+//             {route.routes ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry) : ""}
+//           </MapContainer>
+//         </div>}
+//     </>
+// const FrwkMap = () => {
 
 
-              <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              <Marker position={[latitude, longitude]}>
-                <Popup>
+//   return (
+//     <>
+//       {showModal ? <Modal /> :
+//         <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
 
-                </Popup>
-              </Marker>
+//           <MapContainer
+//             center={[latitude, longitude]}
+//             zoom={15}
+//             style={{ width: "100%", height: "100%" }}
+//           >
 
-            </MapContainer>
 
-          </div >}
+//             <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+//             <Marker position={[latitude, longitude]}>
+//               <Popup>
 
-      </>
+//               </Popup>
+//             </Marker>
 
-    );
-  };
+//           </MapContainer>
 
-  export default FrwkMap;
+//         </div >}
+
+//     </>
+
+//   );
+// };
+
+export default FrwkMap;
 
