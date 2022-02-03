@@ -1,6 +1,6 @@
 import tw from 'tailwind-styled-components';
 
-export const Container = tw.div`
+export const Container = tw.button`
   flex
   w-11/12
   h-109
@@ -30,6 +30,7 @@ export const InformationsDivNews = tw.div`
   flex-wrap
   w-[70%]
   justify-between
+  items-start
   pl-4
   pr-2
 `;
@@ -43,6 +44,7 @@ export const TextNews = tw.p`
   text-ellipsis
   break-word
   overflow-hidden
+  text-left
 `;
 
 export const TextDateNews = tw.p`
