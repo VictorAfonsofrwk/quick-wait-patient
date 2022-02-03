@@ -39,3 +39,12 @@ export async function getDirections(
     console.log(error);
   }
 }
+export async function getAddress(address: string) {
+  try {
+    //https://api.mapbox.com/geocoding/v5/mapbox.places/votuporanga.json?types=place%2Cpostcode%2Caddress&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg
+    const uri = `${MAPBOX_PLACES}${address}.json?country=br&language=pt-PT&types=place%2Cpostcode%2Caddress&access_token=${TOKEN}`;
+    return await getService(BASE_URL, uri);
+  } catch (error) {
+    console.log(error);
+  }
+}
