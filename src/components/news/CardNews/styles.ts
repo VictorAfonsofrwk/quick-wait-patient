@@ -1,6 +1,6 @@
 import tw from 'tailwind-styled-components';
 
-export const Container = tw.button`
+export const Container = tw.div`
   flex
   w-11/12
   h-109
@@ -35,7 +35,7 @@ export const InformationsDivNews = tw.div`
   pr-2
 `;
 
-export const TextNews = tw.p`
+export const TextNews = tw.button`
   text-black
   text-[12px]
   max-h-14
