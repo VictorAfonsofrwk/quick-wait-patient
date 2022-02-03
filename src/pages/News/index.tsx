@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getNews } from "../../services/news/newsService";
 import MainContentNews from '../../components/news/MainContentNews';
 import CaroucelNews from '../../components/news/CaroucelNews';
