@@ -31,13 +31,13 @@ const CardNews = ({ article, index }: IArticle) => {
   };
 
   return (
-    <Container key={index} onClick={handleShowModal}>
+    <Container key={index}>
       <ImageNews style={{ backgroundImage: `url(${urlToImage})` }} />
       <InformationsDivNews>
         <TextNews>{title}</TextNews>
         <TextDateNews>{publishDate}</TextDateNews>
         <LinkNewsDiv>
-          <LinkNews href={url} target="_blank">Ir para a notícia</LinkNews>
+          <LinkNews onClick={handleShowModal}>Ir para a notícia</LinkNews>
           <NextIcon src={next} />
         </LinkNewsDiv>
       </InformationsDivNews>

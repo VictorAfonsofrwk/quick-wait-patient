@@ -6,4 +6,5 @@ export const Container = tw.div`
   rounded-lg 
   m-1 
   bg-sky-50
+  pb-[30px]
 `;

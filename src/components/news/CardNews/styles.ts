@@ -35,7 +35,7 @@ export const InformationsDivNews = tw.div`
   pr-2
 `;
 
-export const TextNews = tw.button`
+export const TextNews = tw.p`
   text-black
   text-[12px]
   max-h-14
@@ -60,7 +60,7 @@ export const LinkNewsDiv = tw.div`
   justify-end
 `;
 
-export const LinkNews = tw.a`
+export const LinkNews = tw.button`
   text-[#12A1A7]
   text-[10px]
   text-right
