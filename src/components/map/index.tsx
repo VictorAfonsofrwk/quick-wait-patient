@@ -20,34 +20,39 @@ import hM from "../../assets/hospitalMarker.png";
 import uLM from "../../assets/userLocationMarker.svg";
 import MapPopup from "./mapPopup";
 import Modal from "./modal";
+import Parcel from "single-spa-react/parcel";
 
 const FrwkMap = () => {
   const openStreetApi = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const [places, setPlaces] = useState<Array<PlaceModel>>([]);
   const [route, setRoute] = useState<RoutingResponseModel>({});
-  const { lat, lon } = JSON.parse(localStorage.getItem('coordenada'))
-  const [showModal, setShowModal] = useState(false)
-  const [latitude, setLatitude] = useState(lat)
-  const [longitude, setLongitude] = useState(lon)
+  const { lat, lon } = JSON.parse(localStorage.getItem("coordenada"));
+  const [showModal, setShowModal] = useState(false);
+  const [latitude, setLatitude] = useState(lat);
+  const [longitude, setLongitude] = useState(lon);
 
   function handleShowModal() {
-    setShowModal(!showModal)
+    setShowModal(!showModal);
   }
   function handleAddressCoordinates(lat: number, lon: number) {
-    setLatitude(lat)
-    setLongitude(lon)
+    setLatitude(lat);
+    setLongitude(lon);
   }
   async function initiateLocalization() {
     try {
       if (lat === 0) {
-        setShowModal(true)
+        setShowModal(true);
       }
     } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
     }
   }
   useEffect(() => {
-    initiateLocalization()
+    initiateLocalization();
+    (async (_) => {
+      const moduleShared = await System.import("@frwk-shared");
+      moduleShared.sharedFunction();
+    })();
   }, []);
   const hospitalMarker = L.icon({
     iconUrl: hM,
@@ -131,52 +136,74 @@ const FrwkMap = () => {
 
   return (
     <>
-      {showModal ? <div><Modal isOpen={showModal} showModal={handleShowModal} setCoordinates={handleAddressCoordinates} /><img src="https://54337.cdn.simplo7.net/static/54337/sku/digital-digital-exclusivas-tricoline-estampa-digital-mapa-mundo-ref-st-287-1589240857424.jpg" /></div>
-        :
+      {showModal ? (
+        <div>
+          <Modal
+            isOpen={showModal}
+            showModal={handleShowModal}
+            setCoordinates={handleAddressCoordinates}
+          />
+          <img src="https://54337.cdn.simplo7.net/static/54337/sku/digital-digital-exclusivas-tricoline-estampa-digital-mapa-mundo-ref-st-287-1589240857424.jpg" />
+        </div>
+      ) : (
         <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
-          <MapContainer
-            center={[latitude, longitude]}
-            zoom={15}
-            style={{ width: "100%", height: "100%" }}
-          >
-            <TileLayer
-              url={openStreetApi}
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {places.map((place) => {
-              const [lng, lat] = place.center;
-              return (
-                <Marker icon={hospitalMarker} key={place.id} position={[lat, lng]}>
-                  <MapPopup name={place.text} address={place.place_name} />
-                  <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
-                    {place.text}
-                  </Tooltip>
-                </Marker>
-              );
-            })}
-            <Marker
-              icon={userLocationMarker}
-              position={[latitude, longitude]}
-              key={"root"}
+          <div className="absolute h-full w-full">
+            <MapContainer
+              center={[latitude, longitude]}
+              zoom={15}
+              style={{ width: "100%", height: "100%" }}
             >
-              <Tooltip
+              <TileLayer
+                url={openStreetApi}
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              {places.map((place) => {
+                const [lng, lat] = place.center;
+                return (
+                  <Marker
+                    icon={hospitalMarker}
+                    key={place.id}
+                    position={[lat, lng]}
+                  >
+                    <MapPopup name={place.text} address={place.place_name} />
+                    <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
+                      {place.text}
+                    </Tooltip>
+                  </Marker>
+                );
+              })}
+              <Marker
+                icon={userLocationMarker}
                 position={[latitude, longitude]}
-                direction="bottom"
-                offset={[0, 0]}
-                opacity={1}
+                key={"root"}
               >
-                Você está aqui
-              </Tooltip>
-            </Marker>
+                <Tooltip
+                  position={[latitude, longitude]}
+                  direction="bottom"
+                  offset={[0, 0]}
+                  opacity={1}
+                >
+                  Você está aqui
+                </Tooltip>
+              </Marker>
 
-            {route.routes
-              ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry)
-              : ""}
-          </MapContainer>
-        </div>}
+              {route.routes
+                ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry)
+                : ""}
+            </MapContainer>
+          </div>
+          <div
+            style={{ height: "calc(100vh - 82px)" }}
+            className="absolute z-[1000] right-0 "
+          >
+            <Parcel
+              config={() => System.import("@frwk/frwk-shared-side-nav")}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
 export default FrwkMap;
-
