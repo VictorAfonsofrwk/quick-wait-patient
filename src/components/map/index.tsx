@@ -51,7 +51,6 @@ const FrwkMap = () => {
     initiateLocalization();
     (async (_) => {
       const moduleShared = await System.import("@frwk-shared");
-      moduleShared.sharedFunction();
     })();
   }, []);
   const hospitalMarker = L.icon({
