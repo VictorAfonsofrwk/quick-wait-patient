@@ -30,6 +30,7 @@ export const InformationsDivNews = tw.div`
   flex-wrap
   w-[70%]
   justify-between
+  items-start
   pl-4
   pr-2
 `;
@@ -43,6 +44,7 @@ export const TextNews = tw.p`
   text-ellipsis
   break-word
   overflow-hidden
+  text-left
 `;
 
 export const TextDateNews = tw.p`
@@ -58,7 +60,7 @@ export const LinkNewsDiv = tw.div`
   justify-end
 `;
 
-export const LinkNews = tw.a`
+export const LinkNews = tw.button`
   text-[#12A1A7]
   text-[10px]
   text-right
