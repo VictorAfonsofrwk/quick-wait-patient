@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { useEffect, useState } from "react";
+import MapaMundi from '../../assets/mapmundi.svg'
 import {
   MapContainer,
   TileLayer,
@@ -39,7 +40,7 @@ const FrwkMap = () => {
   }
   async function initiateLocalization() {
     try {
-      if (lat === 0) {
+      if (lat === -12.941649) {
         setShowModal(true)
       }
     } catch (err) {
@@ -131,7 +132,7 @@ const FrwkMap = () => {
 
   return (
     <>
-      {showModal ? <div><Modal isOpen={showModal} showModal={handleShowModal} setCoordinates={handleAddressCoordinates} /><img src="https://54337.cdn.simplo7.net/static/54337/sku/digital-digital-exclusivas-tricoline-estampa-digital-mapa-mundo-ref-st-287-1589240857424.jpg" /></div>
+      {showModal ? <div><Modal isOpen={showModal} showModal={handleShowModal} setCoordinates={handleAddressCoordinates} /><img className="h-full w-full" src={MapaMundi} /></div>
         :
         <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
           <MapContainer

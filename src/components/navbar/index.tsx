@@ -13,7 +13,7 @@ import {
   NavItem,
   CustomLink
 } from './styles'
-import { LinkProps, useMatch, useResolvedPath } from "react-router-dom";
+import { Link, LinkProps, useMatch, useResolvedPath } from "react-router-dom";
 function ActiveRoute({ children, to, ...props }: LinkProps) {
   let resolved = useResolvedPath(to);
   let match = useMatch({ path: resolved.pathname, end: true });
@@ -46,7 +46,7 @@ export default function NavBar() {
           </LogoHome>
           <NavBarListItem>
             <NavItem id="hospitais">
-              <ActiveRoute to="patient/hospitais">
+              <ActiveRoute to="patient">
                 <img src={map} alt="hospitais" />
                 <span className="ml-2">Hospitais</span>
               </ActiveRoute>
@@ -61,7 +61,8 @@ export default function NavBar() {
               <img src={stylebar} alt='style content' />
             </li>
             <li className="nav-item h-full ">
-              <button type="button" className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button>
+              <Link to="/patient/profile"><button type="button" className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button></Link>
+
             </li>
           </NavBarListItem>
         </NavContainer>
