@@ -113,3 +113,24 @@ export interface RouteGeometry {
   type: "LineString";
   coordinates: Array<Array<number>>;
 }
+
+export interface HospitalMapModel {
+  id?: string;
+  name?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  distance?: number;
+  timeInSeconds?: number;
+  arrivalTime?: string;
+}
+
+export interface HospitalMapRouteModel {
+  routes?: Array<{
+    duration?: number;
+    distance?: number;
+    weightName?: string;
+    weight?: number;
+    geometry?: RouteGeometry;
+  }>;
+}

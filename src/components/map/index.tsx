@@ -1,6 +1,6 @@
-import L from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import { useEffect, useState } from "react";
-import MapaMundi from '../../assets/mapmundi.svg'
+import MapaMundi from "../../assets/mapmundi.svg";
 import {
   MapContainer,
   TileLayer,
@@ -9,54 +9,31 @@ import {
   Tooltip,
 } from "react-leaflet";
 import {
-  LngLatModel,
-  MapBoxMobilityTypeModel,
-  PlaceModel,
+  HospitalMapModel,
+  HospitalMapRouteModel,
   RouteGeometry,
-  RoutingResponseModel,
 } from "../../interfaces/mapboxApiInterfaces";
-import { mockedplaces } from "./mockPlaces";
-import { mockedRoute } from "./mockRoute";
 import hM from "../../assets/hospitalMarker.png";
 import uLM from "../../assets/userLocationMarker.svg";
 import MapPopup from "./mapPopup";
 import Modal from "./modal";
+import Parcel from "single-spa-react/parcel";
+import { getPlacesV2, getRoute } from "../../services/mapbox/mapboxService";
 
 const FrwkMap = () => {
   const openStreetApi = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
-  const [places, setPlaces] = useState<Array<PlaceModel>>([]);
-  const [route, setRoute] = useState<RoutingResponseModel>({});
-  const { lat, lon } = JSON.parse(localStorage.getItem('coordenada'))
-  const [showModal, setShowModal] = useState(false)
-  const [latitude, setLatitude] = useState(lat)
-  const [longitude, setLongitude] = useState(lon)
-
-  function handleShowModal() {
-    setShowModal(!showModal)
-  }
-  function handleAddressCoordinates(lat: number, lon: number) {
-    setLatitude(lat)
-    setLongitude(lon)
-  }
-  async function initiateLocalization() {
-    try {
-      if (lat === -12.941649) {
-        setShowModal(true)
-      }
-    } catch (err) {
-      console.error(err.message)
-    }
-  }
-  useEffect(() => {
-    initiateLocalization()
-  }, []);
+  const [places, setPlaces] = useState<Array<HospitalMapModel>>([]);
+  const [route, setRoute] = useState<HospitalMapRouteModel>({});
+  const [showModal, setShowModal] = useState(false);
+  const [latLng, setLatLng] = useState<Array<number>>([0, 0]);
+  const [selectedItem, setSelectedItem] = useState<HospitalMapModel>({});
+  const [qwMap, setQwMap] = useState<L.Map>(null);
   const hospitalMarker = L.icon({
     iconUrl: hM,
     iconSize: [40, 40], // size of the icon
     iconAnchor: [20, 40], // point of the icon which will correspond to marker's location
     popupAnchor: [0, -40], // point from which the popup should open relative to the iconAnchor
   });
-
   const userLocationMarker = L.icon({
     iconUrl: uLM,
     iconSize: [30, 30], // size of the icon
@@ -64,55 +41,93 @@ const FrwkMap = () => {
     popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
   });
 
-  const getMockedPlaces = new Promise<Array<PlaceModel>>((resolve, reject) => {
-    setTimeout(() => {
-      resolve(mockedplaces);
-    }, 0);
-  });
-
-  const getMockedRoute = new Promise<RoutingResponseModel>(
-    (resolve, reject) => {
-      setTimeout(() => {
-        resolve(mockedRoute);
-      }, 0);
+  function handleShowModal() {
+    setShowModal(!showModal);
+  }
+  function handleAddressCoordinates(lat: number, lon: number) {
+    loadPlaces(lat, lon);
+    setLatLng(() => {
+      return [lat, lon];
+    });
+  }
+  function initiateLocalization() {
+    let lat: number = 0;
+    let lon: number = 0;
+    const coordStorage = localStorage.getItem("coordenada");
+    if (coordStorage) {
+      const parsedObj = JSON.parse(coordStorage);
+      lat = parsedObj.lat;
+      lon = parsedObj.lon;
+      loadPlaces(lat, lon);
+      setLatLng(() => {
+        return [lat, lon];
+      });
+    } else {
+      setShowModal(true);
     }
-  );
+  }
 
-  // lat, long
-  const mapCenter = [-23.295361, -45.925122];
-  async function loadPlaces() {
-    // const resPlaces = await getPlaces({ lat: mapCenter[0], lng: mapCenter[1] });
-    const resPlaces = await getMockedPlaces;
+  async function loadPlaces(lat: number, lon: number) {
+    const resPlaces = await getPlacesV2(lat, lon, 10);
     setPlaces((oldPlaces) => {
       return [...oldPlaces, ...resPlaces];
     });
-    await loadRoute();
+    resPlaces.sort(function (a, b) {
+      if (a.timeInSeconds > b.timeInSeconds) {
+        return 1;
+      }
+      if (a.timeInSeconds < b.timeInSeconds) {
+        return -1;
+      }
+      return 0;
+    });
+    setSelectedItem(resPlaces[0]);
   }
 
-  async function loadRoute() {
-    const mobility: MapBoxMobilityTypeModel = { type: "driving" };
-    const originPoint: LngLatModel = {
-      lat: mapCenter[0],
-      lng: mapCenter[1],
-    };
-    const destinationPoint: LngLatModel = {
-      lat: mockedplaces[0].center[0],
-      lng: mockedplaces[0].center[1],
-    };
-    // const response = await getDirections(
-    //   mobility,
-    //   originPoint,
-    //   destinationPoint
-    // );
-    const response = await getMockedRoute;
+  async function loadRoute(
+    sLat: number = latLng[0],
+    sLon: number = latLng[1],
+    dLat: number = selectedItem.latitude,
+    dLon: number = selectedItem.longitude
+  ) {
+    const response = await getRoute(sLat, sLon, dLat, dLon);
     setRoute((oldRoute) => {
       return { ...oldRoute, ...response };
     });
   }
 
   useEffect(() => {
-    loadPlaces();
+    initiateLocalization();
   }, []);
+
+  useEffect(() => {
+    if (selectedItem?.name) {
+      loadRoute();
+    }
+  }, [selectedItem]);
+
+  useEffect(() => {
+    if (qwMap) {
+      qwMap.on("click", (e) => {
+        console.log(e);
+      });
+    }
+  }, [qwMap]);
+
+  useEffect(() => {
+    if (qwMap) {
+      qwMap.eachLayer((layer) => {
+        if (
+          layer instanceof L.Marker &&
+          layer.options.attribution === selectedItem.id
+        ) {
+          layer.openPopup();
+        }
+      });
+    } else {
+      console.log("mapa não carregado");
+    }
+  }, [route]);
 
   function getLatLonRouteAndRender(geo: RouteGeometry) {
     const steps = geo.coordinates.map((coordinate) => {
@@ -132,36 +147,62 @@ const FrwkMap = () => {
 
   return (
     <>
-      {showModal ? <div><Modal isOpen={showModal} showModal={handleShowModal} setCoordinates={handleAddressCoordinates} /><img className="h-full w-full" src={MapaMundi} /></div>
-        :
+      {showModal || latLng[0] === 0 ? (
+        <div>
+          <Modal
+            isOpen={showModal}
+            showModal={handleShowModal}
+            setCoordinates={handleAddressCoordinates}
+          />
+          <img className="h-full w-full" src={MapaMundi} />
+        </div>
+      ) : (
         <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
           <MapContainer
-            center={[latitude, longitude]}
+            center={latLng as LatLngExpression}
             zoom={15}
             style={{ width: "100%", height: "100%" }}
+            whenCreated={(map: L.Map) => {
+              console.log("mapa criado");
+              setQwMap((oldMap) => {
+                return map;
+              });
+            }}
+            whenReady={() => {
+              console.log("mapa ready");
+            }}
           >
             <TileLayer
               url={openStreetApi}
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {places.map((place) => {
-              const [lng, lat] = place.center;
+            {places.map((place: HospitalMapModel) => {
               return (
-                <Marker icon={hospitalMarker} key={place.id} position={[lat, lng]}>
-                  <MapPopup name={place.text} address={place.place_name} />
+                <Marker
+                  icon={hospitalMarker}
+                  key={place.id}
+                  position={[place.latitude, place.longitude]}
+                  attribution={place.id}
+                >
+                  <MapPopup
+                    name={place.name}
+                    address={place.address}
+                    place={place}
+                    selectItem={setSelectedItem}
+                  />
                   <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
-                    {place.text}
+                    {place.name}
                   </Tooltip>
                 </Marker>
               );
             })}
             <Marker
               icon={userLocationMarker}
-              position={[latitude, longitude]}
+              position={latLng as LatLngExpression}
               key={"root"}
             >
               <Tooltip
-                position={[latitude, longitude]}
+                position={latLng as LatLngExpression}
                 direction="bottom"
                 offset={[0, 0]}
                 opacity={1}
@@ -169,15 +210,26 @@ const FrwkMap = () => {
                 Você está aqui
               </Tooltip>
             </Marker>
-
             {route.routes
-              ? getLatLonRouteAndRender(mockedRoute.routes[0].geometry)
-              : ""}
+              ? getLatLonRouteAndRender(route.routes[0].geometry)
+              : "Carregando rota..."}
           </MapContainer>
-        </div>}
+          {/* <Parcel
+            children={
+              <>
+                <button>ADRIANO</button>
+              </>
+            }
+            config={() => System.import("@frwk/frwk-side-nav")}
+          />
+          <Parcel
+            config={() => System.import("@frwk/frwk-hospital-list")}
+            wrapWith="button"
+          /> */}
+        </div>
+      )}
     </>
   );
 };
 
 export default FrwkMap;
-
