@@ -28,6 +28,7 @@ const FrwkMap = () => {
   const [latLng, setLatLng] = useState<Array<number>>([0, 0]);
   const [selectedItem, setSelectedItem] = useState<HospitalMapModel>({});
   const [qwMap, setQwMap] = useState<L.Map>(null);
+  const [sharedModule, setSharedModule] = useState<any>({});
   const hospitalMarker = L.icon({
     iconUrl: hM,
     iconSize: [40, 40], // size of the icon
@@ -69,9 +70,6 @@ const FrwkMap = () => {
 
   async function loadPlaces(lat: number, lon: number) {
     const resPlaces = await getPlacesV2(lat, lon, 10);
-    setPlaces((oldPlaces) => {
-      return [...oldPlaces, ...resPlaces];
-    });
     resPlaces.sort(function (a, b) {
       if (a.timeInSeconds > b.timeInSeconds) {
         return 1;
@@ -80,6 +78,15 @@ const FrwkMap = () => {
         return -1;
       }
       return 0;
+    });
+    // console.log(sharedModule);
+
+    // if (sharedModule.actions) {
+    //   console.log(sharedModule);
+    //   sharedModule.actions.setOrigin({ hospitalList: resPlaces });
+    // }
+    setPlaces((oldPlaces) => {
+      return [...oldPlaces, ...resPlaces];
     });
     setSelectedItem(resPlaces[0]);
   }
@@ -96,9 +103,23 @@ const FrwkMap = () => {
     });
   }
 
+  async function initSharedModule() {
+    const sharedModule = await System.import("@frwk-shared");
+    console.log(sharedModule);
+    // setSharedModule((oldModule) => {
+    //   return { ...oldModule, ...sharedModule };
+    // });
+    sharedModule.actions.setOrigin({ hospitalList: places });
+  }
+
   useEffect(() => {
+    initSharedModule();
     initiateLocalization();
   }, []);
+
+  useEffect(() => {
+    initSharedModule();
+  }, [places]);
 
   useEffect(() => {
     if (selectedItem?.name) {
