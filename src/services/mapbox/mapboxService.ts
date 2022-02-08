@@ -4,6 +4,8 @@ import {
   MapBoxMobilityTypeModel,
   LngLatModel,
   RoutingResponseModel,
+  HospitalMapModel,
+  HospitalMapRouteModel,
 } from "../../interfaces/mapboxApiInterfaces";
 import { getService } from "../api/generalApiService";
 const TOKEN =
@@ -39,11 +41,50 @@ export async function getDirections(
     console.log(error);
   }
 }
+
 export async function getAddress(address: string) {
   try {
     //https://api.mapbox.com/geocoding/v5/mapbox.places/votuporanga.json?types=place%2Cpostcode%2Caddress&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg
     const uri = `${MAPBOX_PLACES}${address}.json?country=br&language=pt-PT&types=place%2Cpostcode%2Caddress&access_token=${TOKEN}`;
     return await getService(BASE_URL, uri);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getPlacesV2(
+  lat: number,
+  lng: number,
+  radix: number
+): Promise<Array<HospitalMapModel>> {
+  try {
+    const uri = `v1/nearest-hospitals?longitude=${lng}&latitude=${lat}&radix=${radix}`;
+    return await getService("http://localhost:8080/", uri);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getRoute(
+  souceLat: number,
+  sourceLng: number,
+  destinationLat: number,
+  destinationLng: number
+): Promise<HospitalMapRouteModel> {
+  try {
+    const uri = `v1/nearest-hospitals/coordinates?sourceLongitude=${sourceLng}&sourceLatitude=${souceLat}&destinyLongitude=${destinationLng}&destinyLatitude=${destinationLat}`;
+    return await getService("http://localhost:8080/", uri);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAddressV2(
+  address: string
+): Promise<Array<HospitalMapModel>> {
+  try {
+    const uri = `v1/address?addressName=${address}`;
+    return await getService("http://localhost:8080/", uri);
   } catch (error) {
     console.log(error);
   }

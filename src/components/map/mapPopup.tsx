@@ -2,11 +2,13 @@ import { Popup } from "react-leaflet";
 import hospitalIcon from "../../assets/hospital.svg";
 import checkIcon from "../../assets/checkIcon.svg";
 import "./style.css";
-export default function MapPopup({ name, address }) {
+import { navigateToUrl } from "single-spa";
+export default function MapPopup({ name, address, selectItem, place }) {
   return (
     <Popup
       onOpen={() => {
         console.log("abri o popup");
+        selectItem(place);
       }}
       onClose={() => {
         console.log("fechei o popup");
@@ -58,6 +60,7 @@ export default function MapPopup({ name, address }) {
         <button
           onClick={() => {
             console.log("confirmar ida");
+            navigateToUrl("/patient/checkin");
           }}
           className="btn-popup"
         >
