@@ -72,11 +72,11 @@ export default function NavBar() {
               <img src={stylebar} alt='style content' />
             </li>
             <li className="nav-item h-full ">
-              <Link to="/patient/profile">{user ?
-                <UserThumbNail>{{ userName: user.usuario }}</UserThumbNail> :
-                <button
+              {user ?
+                <UserThumbNail>{{ userName: user.usuario }}</UserThumbNail>
+                : <Link to="/patient/profile"><button
                   type="button"
-                  className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button>}</Link>
+                  className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button></Link>}
 
             </li>
           </NavBarListItem>
