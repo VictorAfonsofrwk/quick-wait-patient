@@ -28,6 +28,7 @@ const FrwkMap = () => {
   const [latLng, setLatLng] = useState<Array<number>>([0, 0]);
   const [selectedItem, setSelectedItem] = useState<HospitalMapModel>({});
   const [qwMap, setQwMap] = useState<L.Map>(null);
+  const [sharedModule, setSharedModule] = useState<any>({});
   const hospitalMarker = L.icon({
     iconUrl: hM,
     iconSize: [40, 40], // size of the icon
@@ -69,9 +70,6 @@ const FrwkMap = () => {
 
   async function loadPlaces(lat: number, lon: number) {
     const resPlaces = await getPlacesV2(lat, lon, 10);
-    setPlaces((oldPlaces) => {
-      return [...oldPlaces, ...resPlaces];
-    });
     resPlaces.sort(function (a, b) {
       if (a.timeInSeconds > b.timeInSeconds) {
         return 1;
@@ -80,6 +78,15 @@ const FrwkMap = () => {
         return -1;
       }
       return 0;
+    });
+    // console.log(sharedModule);
+
+    // if (sharedModule.actions) {
+    //   console.log(sharedModule);
+    //   sharedModule.actions.setOrigin({ hospitalList: resPlaces });
+    // }
+    setPlaces((oldPlaces) => {
+      return [...oldPlaces, ...resPlaces];
     });
     setSelectedItem(resPlaces[0]);
   }
@@ -96,9 +103,38 @@ const FrwkMap = () => {
     });
   }
 
+  async function initSharedModule() {
+    const sharedModule = await System.import("@frwk-shared");
+    console.log(sharedModule);
+    // setSharedModule((oldModule) => {
+    //   return { ...oldModule, ...sharedModule };
+    // });
+    sharedModule.actions.setOrigin({ hospitalList: places });
+    sharedModule.listenEvent("@angular/selectHospital", (e: any) => {
+      checkSelectedMarker(e.detail.id);
+    });
+  }
+
+  function checkSelectedMarker(id: string) {
+    if (qwMap) {
+      qwMap.eachLayer((layer) => {
+        if (layer instanceof L.Marker && layer.options.attribution === id) {
+          layer.openPopup();
+        }
+      });
+    } else {
+      console.log("mapa não carregado");
+    }
+  }
+
   useEffect(() => {
+    initSharedModule();
     initiateLocalization();
   }, []);
+
+  useEffect(() => {
+    initSharedModule();
+  }, [places]);
 
   useEffect(() => {
     if (selectedItem?.name) {
@@ -115,18 +151,7 @@ const FrwkMap = () => {
   }, [qwMap]);
 
   useEffect(() => {
-    if (qwMap) {
-      qwMap.eachLayer((layer) => {
-        if (
-          layer instanceof L.Marker &&
-          layer.options.attribution === selectedItem.id
-        ) {
-          layer.openPopup();
-        }
-      });
-    } else {
-      console.log("mapa não carregado");
-    }
+    checkSelectedMarker(selectedItem.id);
   }, [route]);
 
   function getLatLonRouteAndRender(geo: RouteGeometry) {
@@ -158,74 +183,72 @@ const FrwkMap = () => {
         </div>
       ) : (
         <div style={{ width: "100%", height: "calc(100vh - 82px)" }}>
-          <MapContainer
-            center={latLng as LatLngExpression}
-            zoom={15}
-            style={{ width: "100%", height: "100%" }}
-            whenCreated={(map: L.Map) => {
-              console.log("mapa criado");
-              setQwMap((oldMap) => {
-                return map;
-              });
-            }}
-            whenReady={() => {
-              console.log("mapa ready");
-            }}
-          >
-            <TileLayer
-              url={openStreetApi}
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {places.map((place: HospitalMapModel) => {
-              return (
-                <Marker
-                  icon={hospitalMarker}
-                  key={place.id}
-                  position={[place.latitude, place.longitude]}
-                  attribution={place.id}
-                >
-                  <MapPopup
-                    name={place.name}
-                    address={place.address}
-                    place={place}
-                    selectItem={setSelectedItem}
-                  />
-                  <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
-                    {place.name}
-                  </Tooltip>
-                </Marker>
-              );
-            })}
-            <Marker
-              icon={userLocationMarker}
-              position={latLng as LatLngExpression}
-              key={"root"}
+          <div className="absolute h-full w-full">
+            <MapContainer
+              center={latLng as LatLngExpression}
+              zoom={15}
+              style={{ width: "100%", height: "100%" }}
+              whenCreated={(map: L.Map) => {
+                console.log("mapa criado");
+                setQwMap((oldMap) => {
+                  return map;
+                });
+              }}
+              whenReady={() => {
+                console.log("mapa ready");
+              }}
             >
-              <Tooltip
+              <TileLayer
+                url={openStreetApi}
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              {places.map((place: HospitalMapModel) => {
+                return (
+                  <Marker
+                    icon={hospitalMarker}
+                    key={place.id}
+                    position={[place.latitude, place.longitude]}
+                    attribution={place.id}
+                  >
+                    <MapPopup
+                      name={place.name}
+                      address={place.address}
+                      place={place}
+                      selectItem={setSelectedItem}
+                    />
+                    <Tooltip direction="auto" offset={[0, 0]} opacity={1}>
+                      {place.name}
+                    </Tooltip>
+                  </Marker>
+                );
+              })}
+              <Marker
+                icon={userLocationMarker}
                 position={latLng as LatLngExpression}
-                direction="bottom"
-                offset={[0, 0]}
-                opacity={1}
+                key={"root"}
               >
-                Você está aqui
-              </Tooltip>
-            </Marker>
-            {route.routes
-              ? getLatLonRouteAndRender(route.routes[0].geometry)
-              : "Carregando rota..."}
-          </MapContainer>
-          {/* <Parcel
-            children={
-              <>
-                <button>ADRIANO</button>
-              </>
-            }
-            config={() => System.import("@frwk/frwk-side-nav")}
-          />
-          <Parcel
-            config={() => System.import("@frwk/frwk-hospital-list")}
-            wrapWith="button"
-          /> */}
+                <Tooltip
+                  position={latLng as LatLngExpression}
+                  direction="bottom"
+                  offset={[0, 0]}
+                  opacity={1}
+                >
+                  Você está aqui
+                </Tooltip>
+              </Marker>
+              {route.routes
+                ? getLatLonRouteAndRender(route.routes[0].geometry)
+                : "Carregando rota..."}
+            </MapContainer>
+          </div>
+          <div
+            style={{ height: "calc(100vh - 82px)" }}
+            className="absolute z-[1000] right-0 "
+          >
+            <Parcel
+              config={() => System.import("@frwk/frwk-shared-side-nav")}
+            />
+          </div>
         </div>
       )}
     </>
