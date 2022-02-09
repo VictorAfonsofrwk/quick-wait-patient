@@ -110,6 +110,21 @@ const FrwkMap = () => {
     //   return { ...oldModule, ...sharedModule };
     // });
     sharedModule.actions.setOrigin({ hospitalList: places });
+    sharedModule.listenEvent("@angular/selectHospital", (e: any) => {
+      checkSelectedMarker(e.detail.id);
+    });
+  }
+
+  function checkSelectedMarker(id: string) {
+    if (qwMap) {
+      qwMap.eachLayer((layer) => {
+        if (layer instanceof L.Marker && layer.options.attribution === id) {
+          layer.openPopup();
+        }
+      });
+    } else {
+      console.log("mapa não carregado");
+    }
   }
 
   useEffect(() => {
@@ -136,18 +151,7 @@ const FrwkMap = () => {
   }, [qwMap]);
 
   useEffect(() => {
-    if (qwMap) {
-      qwMap.eachLayer((layer) => {
-        if (
-          layer instanceof L.Marker &&
-          layer.options.attribution === selectedItem.id
-        ) {
-          layer.openPopup();
-        }
-      });
-    } else {
-      console.log("mapa não carregado");
-    }
+    checkSelectedMarker(selectedItem.id);
   }, [route]);
 
   function getLatLonRouteAndRender(geo: RouteGeometry) {
