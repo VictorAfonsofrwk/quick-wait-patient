@@ -14,10 +14,12 @@ import {
   CustomLink
 } from './styles'
 import { Link, LinkProps, useMatch, useResolvedPath } from "react-router-dom";
+import { useEffect, useState } from "react";
+import UserThumbNail from "./userAvatar";
+
 function ActiveRoute({ children, to, ...props }: LinkProps) {
   let resolved = useResolvedPath(to);
   let match = useMatch({ path: resolved.pathname, end: true });
-
   return (
     <div>
       <CustomLink
@@ -31,7 +33,16 @@ function ActiveRoute({ children, to, ...props }: LinkProps) {
     </div>
   );
 }
+
 export default function NavBar() {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth')))
+  useEffect(() => {
+    if (!user) {
+      setUser(JSON.parse(localStorage.getItem('auth')))
+    }
+
+  }, [user]);
+
   return (
     <>
       <NavBarMenu>
@@ -61,7 +72,11 @@ export default function NavBar() {
               <img src={stylebar} alt='style content' />
             </li>
             <li className="nav-item h-full ">
-              <Link to="/patient/profile"><button type="button" className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button></Link>
+              <Link to="/patient/profile">{user ?
+                <UserThumbNail>{{ userName: user.usuario }}</UserThumbNail> :
+                <button
+                  type="button"
+                  className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button>}</Link>
 
             </li>
           </NavBarListItem>
