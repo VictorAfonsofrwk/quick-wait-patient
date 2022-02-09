@@ -35,7 +35,7 @@ export default function MapPopup({ name, address, selectItem, place }) {
         <span className="popup-title">Tempo estimado de espera</span>
         <div className="info">10 minutos</div>
         <span className="popup-title">Distancia a ser percorrida</span>
-        <div className="info">1,2 Km</div>
+        <div className="info"> {Math.floor(place.distance / 1000)} Km</div>
         <div style={{ marginTop: "16px", marginBottom: "16px" }}>
           <div
             style={{
