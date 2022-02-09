@@ -43,9 +43,11 @@ const FrwkMap = () => {
   });
 
   function handleShowModal() {
+
     setShowModal(!showModal);
   }
   function handleAddressCoordinates(lat: number, lon: number) {
+    localStorage.setItem('coordenada', JSON.stringify({ lat: lat, lon: lon }))
     loadPlaces(lat, lon);
     setLatLng(() => {
       return [lat, lon];
