@@ -60,7 +60,7 @@ export default function MapPopup({ name, address, selectItem, place }) {
         <button
           onClick={() => {
             console.log("confirmar ida");
-            navigateToUrl("/patient/checkin");
+            navigateToUrl("/checkin");
           }}
           className="btn-popup"
         >
