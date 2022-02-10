@@ -48,7 +48,7 @@ export default function NavBar() {
       <NavBarMenu>
         <NavContainer>
           <LogoHome>
-            <LinkToHome to="/patient">
+            <LinkToHome to="/">
               <HomeItem >
                 <img src={Subtract} alt="logo quick wait" />
                 <img className='-mx-3.5' src={QuickWait} alt="logoquick wait" />
@@ -57,13 +57,13 @@ export default function NavBar() {
           </LogoHome>
           <NavBarListItem>
             <NavItem id="hospitais">
-              <ActiveRoute to="patient">
+              <ActiveRoute to="/">
                 <img src={map} alt="hospitais" />
                 <span className="ml-2">Hospitais</span>
               </ActiveRoute>
             </NavItem>
             <NavItem id="noticias">
-              <ActiveRoute to="patient/noticias">
+              <ActiveRoute to="/noticias">
                 <img src={news} alt="hospitais" className="text-cyan-600" />
                 <span className="ml-2">Noticias</span>
               </ActiveRoute>
@@ -74,7 +74,7 @@ export default function NavBar() {
             <li className="nav-item h-full ">
               {user ?
                 <UserThumbNail>{{ userName: user.usuario }}</UserThumbNail>
-                : <Link to="/patient/profile"><button
+                : <Link to="/user/login"><button
                   type="button"
                   className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button></Link>}
 
