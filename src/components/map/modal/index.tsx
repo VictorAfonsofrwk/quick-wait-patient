@@ -80,13 +80,6 @@ export default function Modal({ showModal, isOpen, setCoordinates }: IModal) {
                                         </Dialog.Title>
                                         <div className="mt-2 w-full flex flex-col h-auto text-white">
                                             <div className='flex flex-row'><InputAddress onChange={(e) => setAddress(e.target.value)} value={address} placeholder='Ex: Rua, Número, Bairro, Cidade - Estado' />
-                                                {/* <button
-                                                    type="button"
-                                                    className="w-full border-white border-2 rounded-full shadow-sm px-4 py-2 bg-transparent text-base font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 sm:ml-3 sm:w-auto sm:text-sm"
-                                                    onClick={showModal}
-                                                >
-                                                    &gt;
-                                                </button> */}
                                             </div>
                                             {addressList ? <ul>
                                                 {addressList.map((addressItem: IFeature) => {
