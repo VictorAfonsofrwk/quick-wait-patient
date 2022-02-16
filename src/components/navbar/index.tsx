@@ -12,11 +12,13 @@ import {
   HomeItem,
   NavBarListItem,
   NavItem,
-  CustomLink
-} from './styles'
+  CustomLink,
+} from "./styles";
 import { Link, LinkProps, useMatch, useResolvedPath } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserThumbNail from "./userAvatar";
+
+import * as Sentry from "@sentry/react";
 
 function ActiveRoute({ children, to, ...props }: LinkProps) {
   let resolved = useResolvedPath(to);
@@ -35,13 +37,12 @@ function ActiveRoute({ children, to, ...props }: LinkProps) {
   );
 }
 
-export default function NavBar() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth')))
+function NavBar() {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("auth")));
   useEffect(() => {
     if (!user) {
-      setUser(JSON.parse(localStorage.getItem('auth')))
+      setUser(JSON.parse(localStorage.getItem("auth")));
     }
-
   }, [user]);
 
   return (
@@ -50,9 +51,9 @@ export default function NavBar() {
         <NavContainer>
           <LogoHome>
             <LinkToHome to="/">
-              <HomeItem >
+              <HomeItem>
                 <img src={Subtract} alt="logo quick wait" />
-                <img className='-mx-3.5' src={QuickWait} alt="logoquick wait" />
+                <img className="-mx-3.5" src={QuickWait} alt="logoquick wait" />
               </HomeItem>
             </LinkToHome>
           </LogoHome>
@@ -77,15 +78,21 @@ export default function NavBar() {
               </ActiveRoute>
             </NavItem>
             <li className="nav-item h-full -m-1">
-              <img src={stylebar} alt='style content' />
+              <img src={stylebar} alt="style content" />
             </li>
             <li className="nav-item h-full ">
-              {user ?
+              {user ? (
                 <UserThumbNail>{{ userName: user.usuario }}</UserThumbNail>
-                : <Link to="/user/login"><button
-                  type="button"
-                  className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 ">Entrar</button></Link>}
-
+              ) : (
+                <Link to="/user/login">
+                  <button
+                    type="button"
+                    className="text-sm rounded-lg shadow-md py-2 px-6 font-semibold bg-white text-gray-500 "
+                  >
+                    Entrar
+                  </button>
+                </Link>
+              )}
             </li>
 
           </NavBarListItem>
@@ -94,3 +101,5 @@ export default function NavBar() {
     </>
   );
 }
+
+export default Sentry.withProfiler(NavBar);

@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { getNews } from "../../services/news/newsService";
-import MainContentNews from '../../components/news/MainContentNews';
-import CaroucelNews from '../../components/news/CaroucelNews';
-import ListViewNews from '../../components/news/ListViewNews';
-import { Container } from './styles';
+import MainContentNews from "../../components/news/MainContentNews";
+import CaroucelNews from "../../components/news/CaroucelNews";
+import ListViewNews from "../../components/news/ListViewNews";
+import { Container } from "./styles";
+import * as Sentry from "@sentry/react";
 
-export default function News() {
+function News() {
   const [articles, setArticles] = useState([]);
   async function loadNews() {
-    setArticles(await getNews(''));
+    setArticles(await getNews(""));
   }
 
   useEffect(() => {
@@ -25,3 +26,5 @@ export default function News() {
     </Container>
   );
 }
+
+export default Sentry.withProfiler(News);
