@@ -31,6 +31,11 @@ export default function Sobre() {
             especialidade: "Desenvolvedor Front-End"
         },
         {
+            urlImg: "https://media-exp1.licdn.com/dms/image/C5603AQFq5TB9El-rvg/profile-displayphoto-shrink_800_800/0/1643037510077?e=1650499200&v=beta&t=7R3FNpltHbVbHrZ63a0nyTOZfJSEG8zgNNs8qbF91Uc",
+            nome: "Matheus Souto",
+            especialidade: "Desenvolvedor Flutter"
+        },
+        {
             urlImg: "https://media-exp1.licdn.com/dms/image/C4E03AQH1StEcnYwTqw/profile-displayphoto-shrink_800_800/0/1610978760598?e=1650499200&v=beta&t=2imD8_hKrI2w0obJeGX9BJmr-lJTJxK-ENRqlA_mLio",
             nome: "Raiffe Pontes",
             especialidade: "Desenvolvedor Front-End"
@@ -52,15 +57,11 @@ export default function Sobre() {
     }, [controle]);
 
     useEffect(() => {
-        setCaroucel(<div key={timer} className='animate__animated animate__backInDown mt-10 drop-shadow-2xl animate__delay-1s h-2/4 w-auto md:w-96 bg-cyan-100 rounded-lg p-8 flex flex-col flex-wrap space-y-2 items-center'>
+        setCaroucel(<div key={timer} className='animate__animated animate__backInDown mt-10 drop-shadow-2xl animate__delay-1s h-auto w-auto md:w-96 bg-cyan-100 rounded-lg p-8 flex flex-col flex-wrap space-y-2 items-center'>
             <img className='rounded-full h-36 w-36' src={criadores[timer].urlImg} alt="" />
             <h2 className='font-semibold text-xl text-cyan-800'>{criadores[timer].nome}</h2>
             <h3 className='text-lg text-cyan-700 '>{criadores[timer].especialidade}</h3>
         </div>)
-        id.current = window.setInterval(() => {
-
-
-        }, 3200);
         if (timer === 0) {
             clear();
             setTimer(criadores.length - 1)
