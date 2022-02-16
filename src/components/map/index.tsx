@@ -43,11 +43,10 @@ const FrwkMap = () => {
   });
 
   function handleShowModal() {
-
     setShowModal(!showModal);
   }
   function handleAddressCoordinates(lat: number, lon: number) {
-    localStorage.setItem('coordenada', JSON.stringify({ lat: lat, lon: lon }))
+    localStorage.setItem("coordenada", JSON.stringify({ lat: lat, lon: lon }));
     loadPlaces(lat, lon);
     setLatLng(() => {
       return [lat, lon];
@@ -111,7 +110,8 @@ const FrwkMap = () => {
     // setSharedModule((oldModule) => {
     //   return { ...oldModule, ...sharedModule };
     // });
-    sharedModule.actions.setOrigin({ hospitalList: places });
+    debugger;
+    sharedModule.actions.setHospitalList({ hospitalList: places });
     sharedModule.listenEvent("@angular/selectHospital", (e: any) => {
       checkSelectedMarker(e.detail.id);
     });
