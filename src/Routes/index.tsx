@@ -2,14 +2,19 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import CheckIn from "../pages/CheckIn";
 import News from "../pages/News";
+import Login from "../pages/Login";
+import Sobre from "../components/about";
+import Loading from "../components/loading";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/patient" element={<Home />} />
-      <Route path="/patient/hospitais" element={<Home />} />
-      <Route path="/patient/noticias" element={<News />} />
-      <Route path="/patient/checkin" element={<CheckIn />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/noticias" element={<News />} />
+      <Route path="/sobre" element={<Sobre />} />
+      <Route path="/checkin" element={<CheckIn />} />
+      <Route path="/user/login" element={<Login />} />
+      <Route path="*" element={<Home />} />
     </Routes>
   );
 }
