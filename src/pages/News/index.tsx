@@ -1,37 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { getNews } from "../../services/news/newsService";
-import MainContentNews from '../../components/news/MainContentNews';
-import CaroucelNews from '../../components/news/CaroucelNews';
-import ListViewNews from '../../components/news/ListViewNews';
-import { Container } from './styles';
-import Loading from '../../components/loading';
+import MainContentNews from "../../components/news/MainContentNews";
+import CaroucelNews from "../../components/news/CaroucelNews";
+import ListViewNews from "../../components/news/ListViewNews";
+import { Container } from "./styles";
+import * as Sentry from "@sentry/react";
+import Loading from "../../components/loading";
 
-export default function News() {
+function News() {
   const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   async function loadNews() {
-    setArticles(await getNews(''));
-    setLoading(false)
+    setArticles(await getNews(""));
+    setLoading(false);
   }
 
   useEffect(() => {
     loadNews();
-
   }, []);
-  let mainJsx = <Loading />
+  let mainJsx = <Loading />;
   if (!loading) {
-    mainJsx =
+    mainJsx = (
       <MainContentNews>
         <>
           <CaroucelNews articles={articles} />
           <ListViewNews articles={articles} />
         </>
       </MainContentNews>
+    );
   }
-  return (
-    <Container>
-
-      {mainJsx}
-    </Container>
-  );
+  return <Container>{mainJsx}</Container>;
 }
+
+export default Sentry.withProfiler(News);

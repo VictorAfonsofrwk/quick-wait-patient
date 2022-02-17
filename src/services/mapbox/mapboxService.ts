@@ -8,6 +8,7 @@ import {
   HospitalMapRouteModel,
 } from "../../interfaces/mapboxApiInterfaces";
 import { getService } from "../api/generalApiService";
+import * as Sentry from "@sentry/browser";
 const TOKEN =
   "pk.eyJ1IjoiYWRyaTRuMCIsImEiOiJja3l4MWVqaGowY2JkMnB0Ynk3ZG4yYmUxIn0.nlB0uFp7dZFqsYz0jm9xBA";
 const BASE_URL = `https://api.mapbox.com/`;
@@ -62,6 +63,7 @@ export async function getPlacesV2(
     return await getService("http://localhost:8080/", uri);
   } catch (error) {
     console.log(error);
+    Sentry.captureException(error);
   }
 }
 
@@ -76,6 +78,7 @@ export async function getRoute(
     return await getService("http://localhost:8080/", uri);
   } catch (error) {
     console.log(error);
+    Sentry.captureException(error);
   }
 }
 
@@ -87,5 +90,6 @@ export async function getAddressV2(
     return await getService("http://localhost:8080/", uri);
   } catch (error) {
     console.log(error);
+    Sentry.captureException(error);
   }
 }
