@@ -4,6 +4,7 @@ import CheckIn from "../pages/CheckIn";
 import News from "../pages/News";
 import Login from "../pages/Login";
 import Sobre from "../components/about";
+import Loading from "../components/loading";
 
 export default function AppRoutes() {
   return (

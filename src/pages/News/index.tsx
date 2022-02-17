@@ -5,26 +5,31 @@ import CaroucelNews from "../../components/news/CaroucelNews";
 import ListViewNews from "../../components/news/ListViewNews";
 import { Container } from "./styles";
 import * as Sentry from "@sentry/react";
+import Loading from "../../components/loading";
 
 function News() {
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
   async function loadNews() {
     setArticles(await getNews(""));
+    setLoading(false);
   }
 
   useEffect(() => {
     loadNews();
   }, []);
-  return (
-    <Container>
+  let mainJsx = <Loading />;
+  if (!loading) {
+    mainJsx = (
       <MainContentNews>
         <>
           <CaroucelNews articles={articles} />
           <ListViewNews articles={articles} />
         </>
       </MainContentNews>
-    </Container>
-  );
+    );
+  }
+  return <Container>{mainJsx}</Container>;
 }
 
 export default Sentry.withProfiler(News);
