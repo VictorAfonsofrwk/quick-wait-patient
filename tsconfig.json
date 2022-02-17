@@ -4,7 +4,11 @@
     "jsx": "react-jsx",
     "declarationDir": "dist"
   },
-  "files": ["src/frwk-quick-wait-react.tsx"],
-  "include": ["src/**/*","tailwind.config.js"],
+  "files": [
+    "src/frwk-quick-wait-react.tsx",
+    "src/frwk-quick-wait-map.tsx",
+    "src/frwk-quick-wait-add-view-reminder.tsx"
+  ],
+  "include": ["src/**/*", "tailwind.config.js"],
   "exclude": ["src/**/*.test*"]
 }

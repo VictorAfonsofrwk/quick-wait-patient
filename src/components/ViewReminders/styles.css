@@ -2,11 +2,54 @@
   position: absolute;
   top: 80px;
   right: 0;
-  min-width: 25vw;
-  height: calc(100vh - 80px);
+  min-width: 30vw;
+  min-height: calc(100vh - 80px);
   background-color: #12a1a7;
 }
 .title {
   font-size: 30px;
   line-height: 37px;
+}
+
+.fc-view-harness {
+  border: 1px solid white;
+  border-radius: 15px;
+  min-width: 430px;
+  background-color: #fff;
+  padding: 50px !important;
+}
+
+.fc-toolbar-title {
+  color: #fff;
+}
+.fc-theme-standard .fc-scrollgrid {
+  border: none !important;
+}
+
+.font-quicksand {
+  font-family: "Quicksand";
+}
+
+.date {
+  font-size: 30px !important;
+  line-height: 35px;
+}
+.icon-container {
+  width: 50%;
+}
+.reminder-text {
+  color: #12a1a7;
+  width: 50%;
+}
+.reminder-time {
+  color: #12a1a7;
+  width: 50%;
+}
+.reminder-week-days {
+  width: 50%;
+  color: grey;
+  font-family: "Quicksand";
+}
+.add-icon {
+  cursor: pointer;
 }
