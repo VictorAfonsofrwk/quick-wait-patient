@@ -1,9 +1,12 @@
+.container-c {
+  overflow-x: auto;
+  height: calc(100vh - 80px);
+  position: relative;
+}
 .reminder-container {
   position: absolute;
-  top: 80px;
   right: 0;
   min-width: 30vw;
-  min-height: calc(100vh - 80px);
   background-color: #12a1a7;
 }
 .title {
