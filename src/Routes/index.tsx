@@ -14,7 +14,6 @@ export default function AppRoutes() {
       <Route path="/sobre" element={<Sobre />} />
       <Route path="/checkin" element={<CheckIn />} />
       <Route path="/user/login" element={<Login />} />
-      <Route path="*" element={<Home />} />
     </Routes>
   );
 }
