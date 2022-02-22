@@ -14,6 +14,7 @@ export const Container = tw.div<ILoading>`
   flex 
   flex-col 
   items-center
+  ${({ loading }) => loading ? 'pt-[10%]' : ''}
   ${({ loading }) => loading ? 'h-screen' : 'h-full'}
 `;
 
