@@ -22,21 +22,18 @@ function News() {
   }, []);
 
   return (
-    !loading ? (
-      <Container>
-        <MainContentNews>
-          <>
-            <CaroucelNews articles={articles} />
-            <ListViewNews articles={articles} />
-          </>
-        </MainContentNews>
-      </Container>
-    )
-      : (
-        <Container>
-          <Loading />
-        </Container>
-      )
+    <Container>
+      {
+        !loading ? (
+          <MainContentNews>
+            <>
+              <CaroucelNews articles={articles} />
+              <ListViewNews articles={articles} />
+            </>
+          </MainContentNews>
+        ) : <Loading />
+      }
+    </Container>
   );
 }
 
