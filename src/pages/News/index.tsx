@@ -10,7 +10,9 @@ import Loading from "../../components/loading";
 function News() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+
   async function loadNews() {
+    setLoading(true);
     setArticles(await getNews(""));
     setLoading(false);
   }
@@ -18,18 +20,24 @@ function News() {
   useEffect(() => {
     loadNews();
   }, []);
-  let mainJsx = <Loading />;
-  if (!loading) {
-    mainJsx = (
-      <MainContentNews>
-        <>
-          <CaroucelNews articles={articles} />
-          <ListViewNews articles={articles} />
-        </>
-      </MainContentNews>
-    );
-  }
-  return <Container>{mainJsx}</Container>;
+
+  return (
+    !loading ? (
+      <Container>
+        <MainContentNews>
+          <>
+            <CaroucelNews articles={articles} />
+            <ListViewNews articles={articles} />
+          </>
+        </MainContentNews>
+      </Container>
+    )
+      : (
+        <Container>
+          <Loading />
+        </Container>
+      )
+  );
 }
 
 export default Sentry.withProfiler(News);
