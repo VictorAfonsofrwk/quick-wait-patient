@@ -5,6 +5,8 @@
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently yarn:build:*",
     "build:webpack": "webpack --mode=production",
+    "buildAndDeploy": " webpack --mode=production && webpack serve --open --env isLocal",
+    "open": "webpack serve --open --env isLocal",
     "analyze": "webpack --mode=production --env analyze",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
