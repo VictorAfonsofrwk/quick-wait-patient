@@ -4,7 +4,7 @@
     "start": "webpack serve --port 8500 --env isLocal",
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently yarn:build:*",
-    "build:webpack": "webpack --mode=production --config webpack.prod.js",
+    "build:webpack": "webpack --mode=production",
     "deploy": "node server.js",
     "open": "webpack serve --open --env isLocal",
     "analyze": "webpack --mode=production --env analyze",
@@ -90,5 +90,9 @@
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1"
   },
-  "types": "dist/frwk-quick-wait-react.d.ts"
+  "types": "dist/frwk-quick-wait-react.d.ts",
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  }
 }
