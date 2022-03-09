@@ -1,1 +1,1 @@
-web yarn buildAndDeploy
+web yarn deploy
