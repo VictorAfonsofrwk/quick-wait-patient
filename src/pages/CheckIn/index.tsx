@@ -33,7 +33,7 @@ const CheckIn: React.FC = () => {
     }
   }, [timer]);
   function display(seconds: number) {
-    const format = (val) => `0${Math.floor(val)}`.slice(-2);
+    const format = (val) => `0${Math.floor(val)}`?.slice(-2);
     const hours = seconds / 3600;
     const minutes = (seconds % 3600) / 60;
 
