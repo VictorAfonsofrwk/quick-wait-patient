@@ -18,10 +18,9 @@ export default function CaroucelNews({ articles }: IListArticles) {
       >
         {articles?.slice(0, 5).map((article: IArticles, index) => {
           return (
-            <div key={index}>
-              <ImageNews
-                style={{ backgroundImage: `url(${article.urlToImage})` }}
-              />
+            <div data-testid="legend" key={index}>
+              <ImageNews 
+                style={{ backgroundImage: `url(${article.urlToImage})` }} />
               <p className="legend">{article.title}</p>
             </div>
           );

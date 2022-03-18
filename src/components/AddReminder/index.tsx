@@ -1,8 +1,9 @@
 import ReactModal from "react-modal";
 import { useState } from "react";
 import { IoIosCloseCircle } from "react-icons/io";
+import DateFnsUtils from '@date-io/date-fns';
 import "./styles.css";
-import { KeyboardTimePicker } from "@material-ui/pickers";
+import { KeyboardTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 interface daysOfWeek {
   sunday: boolean;
   monday: boolean;
@@ -45,7 +46,7 @@ function AddReminder() {
   }
 
   return (
-    <div>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <ReactModal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -84,6 +85,7 @@ function AddReminder() {
           <p className="frequency-text">Frequência</p>
           <div className="mt-6 flex gap-2">
             <div
+               data-testid="custom-element-sunday"
               className={
                 "day px-3 py-1 " +
                 (daysOfWeek.sunday ? "active-day" : "bg-white")
@@ -94,6 +96,7 @@ function AddReminder() {
             </div>
 
             <div
+              data-testid="custom-element-monday"
               className={
                 "day px-3 py-1 " +
                 (daysOfWeek.monday ? "active-day" : "bg-white")
@@ -104,6 +107,7 @@ function AddReminder() {
             </div>
 
             <div
+              data-testid="custom-element-tuesday"
               className={
                 "day px-3 py-1 " +
                 (daysOfWeek.tuesday ? "active-day" : "bg-white")
@@ -114,6 +118,7 @@ function AddReminder() {
             </div>
 
             <div
+              data-testid="custom-element-wednesday"
               className={
                 "day px-3 py-1 " +
                 (daysOfWeek.wednesday ? "active-day" : "bg-white")
@@ -124,6 +129,7 @@ function AddReminder() {
             </div>
 
             <div
+              data-testid="custom-element-thursday"
               className={
                 "day px-3 py-1 " +
                 (daysOfWeek.thursday ? "active-day" : "bg-white")
@@ -134,6 +140,7 @@ function AddReminder() {
             </div>
 
             <div
+              data-testid="custom-element-friday"
               className={
                 "day px-3 py-1 " +
                 (daysOfWeek.friday ? "active-day" : "bg-white")
@@ -144,6 +151,7 @@ function AddReminder() {
             </div>
 
             <div
+              data-testid="custom-element-saturday"
               className={
                 "day px-3 py-1 " +
                 (daysOfWeek.saturday ? "active-day" : "bg-white")
@@ -171,8 +179,7 @@ function AddReminder() {
           </button>
         </div>
       </ReactModal>
-    </div>
+    </MuiPickersUtilsProvider>
   );
 }
-
 export default AddReminder;
