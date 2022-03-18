@@ -5,6 +5,8 @@
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently yarn:build:*",
     "build:webpack": "webpack --mode=production",
+    "deploy": "node server.js",
+    "open": "webpack serve --open --env isLocal",
     "analyze": "webpack --mode=production --env analyze",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
@@ -38,6 +40,8 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-ts-react-important-stuff": "^3.0.0",
     "eslint-plugin-prettier": "^3.4.1",
+    "express": "^4.17.3",
+    "cors": "^2.8.5",
     "husky": "^7.0.2",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.6",
@@ -77,6 +81,8 @@
     "@types/webpack-env": "^1.16.2",
     "animate.css": "^4.1.1",
     "axios": "^0.25.0",
+    "express": "^4.17.3",
+    "cors": "^2.8.5",
     "leaflet": "^1.7.1",
     "material-ui": "^0.20.2",
     "react": "^17.0.2",
@@ -89,5 +95,9 @@
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1"
   },
-  "types": "dist/frwk-quick-wait-react.d.ts"
+  "types": "dist/frwk-quick-wait-react.d.ts",
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  }
 }

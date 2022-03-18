@@ -1,5 +1,5 @@
-import CardNews from '../CardNews';
-import { Container } from './styles';
+import CardNews from "../CardNews";
+import { Container } from "./styles";
 import { IArticles } from "../../../interfaces/newsInterface";
 
 interface IListArticles {
@@ -14,6 +14,6 @@ const ListViewNews = ({ articles }: IListArticles) => {
       ))]}
     </Container>
   );
-}
+};
 
 export default ListViewNews;
