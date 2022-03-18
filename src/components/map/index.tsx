@@ -43,7 +43,6 @@ const FrwkMap = () => {
   });
 
   function handleShowModal() {
-
     setShowModal(!showModal);
   }
   function handleAddressCoordinates(lat: number, lon: number) {
