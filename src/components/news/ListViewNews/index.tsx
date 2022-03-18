@@ -9,7 +9,7 @@ interface IListArticles {
 const ListViewNews = ({ articles }: IListArticles) => {
   return (
     <Container>
-      {[articles.slice(5, articles.length).map((article: IArticles, index) => (
+      {[articles?.slice(5, articles.length).map((article: IArticles, index) => (
         <CardNews article={article} index={index} />
       ))]}
     </Container>

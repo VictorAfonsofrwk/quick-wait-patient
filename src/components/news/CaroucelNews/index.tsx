@@ -17,7 +17,7 @@ export default function CaroucelNews({ articles }: IListArticles) {
         renderThumbs={(children: React.ReactChild[]) => []}>
         {articles.slice(0,5).map((article: IArticles, index) => {
           return (
-            <div key={index}>
+            <div data-testid="legend" key={index}>
               <ImageNews 
                 style={{ backgroundImage: `url(${article.urlToImage})` }} />
               <p className="legend">{article.title}</p>
